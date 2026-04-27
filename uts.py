@@ -10,8 +10,8 @@ df = pd.DataFrame(data)
 
 print('---Nilai Mahasiswa---')
 print('Rata-rata nilai:', df['Nilai'].mean())
-print(f'Nilai Terendah:', df['Nilai'].min())
-print(f'Nilai tertinggi:', df['Nilai'].max())
+print('Nilai Terendah:', df['Nilai'].min())
+print('Nilai tertinggi:', df['Nilai'].max())
 
 # Simpan hasil ke file CSV
 df.to_csv('hasil_nilai.csv', index=False)
