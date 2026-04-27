@@ -19,7 +19,6 @@ print('Hasil nilai telah disimpan ke file hasil_nilai.csv')
 print('Selesai')
 
 # Simpan hasil ke database PostgreSQL
-# Simpan hasil ke database PostgreSQL
 try:
     conn = psycopg2.connect(
         host=os.getenv('DB_HOST', 'db'),
