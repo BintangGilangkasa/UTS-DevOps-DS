@@ -27,7 +27,7 @@ services:
       - DATA_NILAI=85,90,78,92,88,95,80,100,150
     volumes:
       - .:/app
-    command: sh -c "sleep 10 && python uts.py"
+    command: sh -c "sleep 10 && python app/uts.py"
 
 volumes:
   postgres_data:
