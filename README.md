@@ -1,68 +1,101 @@
-# 🚀 UTS DevOps & MLOps
-
-## Otomatisasi Infrastruktur dan Analisis Data Menggunakan Terraform, Ansible, Docker, dan Python
-
----
+# 🚀 Infrastructure as Code & Automated Data Analysis with Terraform, Ansible, and Docker
 
 ## 📖 Deskripsi Proyek
 
-Proyek ini bertujuan untuk menerapkan konsep **Infrastructure as Code (IaC)** dan **Automation Configuration** dalam membangun lingkungan Data Science secara otomatis.
-
-Teknologi yang digunakan:
-
-* Terraform
-* Docker
-* Ansible
-* Python
-* Pandas
+Proyek ini merupakan implementasi konsep **Infrastructure as Code (IaC)** dan **Configuration Management** menggunakan **Terraform**, **Ansible**, dan **Docker** untuk membangun lingkungan Data Science secara otomatis.
 
 Sistem akan:
 
-1. Membuat container Ubuntu menggunakan Terraform.
-2. Mengonfigurasi environment menggunakan Ansible.
-3. Menginstal Python dan library yang diperlukan.
-4. Menyalin file program dan dataset ke dalam container.
-5. Menjalankan program analisis data secara otomatis.
+* Membuat container Ubuntu menggunakan Terraform.
+* Mengonfigurasi environment menggunakan Ansible.
+* Menginstal Python dan seluruh dependency yang dibutuhkan.
+* Menyalin dataset dan program Python ke dalam container.
+* Menjalankan analisis data secara otomatis menggunakan Python dan Pandas.
+
+Proyek ini dibuat sebagai pemenuhan tugas mata kuliah **DevOps & MLOps**.
 
 ---
 
-## 📂 Struktur Folder
+# 🏗️ Arsitektur Sistem
+
+```text
+┌─────────────┐
+│ Terraform   │
+└──────┬──────┘
+       │
+       ▼
+┌──────────────────────┐
+│ Docker Container     │
+│ server_uas_analitik  │
+└──────┬───────────────┘
+       │
+       ▼
+┌──────────────────────┐
+│ Ansible Automation   │
+│ Install Python       │
+│ Install Dependencies │
+└──────┬───────────────┘
+       │
+       ▼
+┌──────────────────────┐
+│ Python Application   │
+│ uts.py               │
+│ hasil_nilai.csv      │
+└──────────────────────┘
+```
+
+---
+
+# 📂 Struktur Proyek
 
 ```text
 UTS/
 │
-├── main.tf
-├── inventory.ini
-├── playbook.yml
-├── requirements.txt
-├── uts.py
-├── hasil_nilai.csv
-└── README.md
+├── terraform/
+│   └── main.tf
+│
+├── ansible/
+│   ├── inventory.ini
+│   └── playbook.yml
+│
+├── app/
+│   ├── uts.py
+│   ├── requirements.txt
+│   └── hasil_nilai.csv
+│
+├── Dockerfile
+├── docker-compose.yml
+├── README.md
+└── .gitignore
 ```
+
+---
+
+# 🛠️ Teknologi yang Digunakan
+
+| Teknologi | Fungsi                   |
+| --------- | ------------------------ |
+| Terraform | Infrastructure as Code   |
+| Docker    | Containerization         |
+| Ansible   | Configuration Management |
+| Python    | Analisis Data            |
+| Pandas    | Pengolahan Dataset       |
 
 ---
 
 # ⚙️ Prasyarat
 
-Pastikan software berikut sudah terinstal:
+Pastikan software berikut telah terinstal:
 
 ### Docker Desktop
 
-Cek:
+Verifikasi:
 
 ```bash
 docker --version
 ```
 
-### Terraform
-
-Cek:
-
-```bash
-terraform version
-```
-
-Pastikan Docker Desktop dalam keadaan:
+Pastikan Docker Desktop menunjukkan status:
 
 ```text
 Engine Running
@@ -70,57 +103,60 @@ Engine Running
 
 ---
 
-# 🚀 Langkah Menjalankan Proyek
+### Terraform
 
-## 1. Masuk ke Folder Proyek
+Verifikasi:
 
-Buka PowerShell kemudian masuk ke direktori proyek:
-
-```powershell
-cd D:\KULIAH\SEMESTER-6\devops-ml\UTS
+```bash
+terraform version
 ```
 
 ---
 
-## 2. Inisialisasi Terraform
+# 🚀 Cara Menjalankan Proyek
 
-Jalankan:
+## 1️⃣ Clone Repository
+
+```bash
+git clone <repository-url>
+cd UTS
+```
+
+---
+
+## 2️⃣ Membuat Infrastruktur dengan Terraform
+
+Masuk ke folder Terraform:
+
+```bash
+cd terraform
+```
+
+Inisialisasi Terraform:
 
 ```bash
 terraform init
 ```
 
-Jika berhasil akan muncul:
-
-```text
-Terraform has been successfully initialized!
-```
-
----
-
-## 3. Membuat Infrastruktur
-
-Jalankan:
+Buat container Ubuntu:
 
 ```bash
 terraform apply -auto-approve
 ```
 
-Terraform akan membuat container:
+Jika berhasil akan muncul:
 
 ```text
-server_uas_analitik
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
----
-
-## 4. Verifikasi Container Berjalan
+Verifikasi container:
 
 ```bash
 docker ps
 ```
 
-Pastikan terdapat container:
+Output:
 
 ```text
 server_uas_analitik
@@ -128,9 +164,15 @@ server_uas_analitik
 
 ---
 
-## 5. Konfigurasi Environment Menggunakan Ansible
+## 3️⃣ Konfigurasi Environment Menggunakan Ansible
 
-Jalankan perintah berikut:
+Kembali ke root project:
+
+```bash
+cd ..
+```
+
+Jalankan Ansible:
 
 ```powershell
 docker run --rm -it `
@@ -138,10 +180,10 @@ docker run --rm -it `
 -v "${PWD}:/ansible" `
 -w /ansible `
 --entrypoint sh alpine/ansible `
--c "apk add --no-cache docker-cli && ansible-playbook -i inventory.ini playbook.yml"
+-c "apk add --no-cache docker-cli && ansible-playbook -i ansible/inventory.ini ansible/playbook.yml"
 ```
 
-Jika berhasil akan muncul:
+Jika berhasil:
 
 ```text
 PLAY RECAP
@@ -152,31 +194,16 @@ changed=2
 failed=0
 ```
 
-Keterangan:
-
-* Python berhasil diinstal
-* Pip berhasil diinstal
-* Requirements berhasil diinstal
-* Tidak ada error
-
 ---
 
-## 6. Salin Program ke Dalam Container
+## 4️⃣ Salin Program dan Dataset ke Container
 
 ```powershell
-docker cp uts.py server_uas_analitik:/uts.py
-docker cp hasil_nilai.csv server_uas_analitik:/hasil_nilai.csv
+docker cp app/uts.py server_uas_analitik:/uts.py
+docker cp app/hasil_nilai.csv server_uas_analitik:/hasil_nilai.csv
 ```
 
-Jika berhasil:
-
-```text
-Successfully copied ...
-```
-
----
-
-## 7. Verifikasi File Berhasil Disalin
+Verifikasi:
 
 ```powershell
 docker exec -it server_uas_analitik ls /
@@ -191,7 +218,7 @@ uts.py
 
 ---
 
-## 8. Menjalankan Program Analisis Data
+## 5️⃣ Menjalankan Program Analisis Data
 
 ```powershell
 docker exec -it server_uas_analitik python3 /uts.py
@@ -204,44 +231,84 @@ Contoh output:
 
 Rata-rata nilai: 88.5
 Nilai Terendah: 78
-Nilai tertinggi: 100
+Nilai Tertinggi: 100
 
 Hasil nilai telah disimpan ke file hasil_nilai.csv
 
 Selesai
 ```
 
-Output tersebut menunjukkan bahwa:
-
-✅ Dataset berhasil dibaca
-
-✅ Analisis berhasil dilakukan
-
-✅ Program berhasil dijalankan di dalam container
-
 ---
 
-# 🧹 Menghapus Infrastruktur
+# 🧹 Cleanup Infrastruktur
 
-Jika sudah selesai:
+Masuk ke folder Terraform:
 
-## Hapus Container
+```bash
+cd terraform
+```
+
+Hapus seluruh resource:
 
 ```bash
 terraform destroy -auto-approve
 ```
 
----
-
-## Hapus Image Ubuntu
+Verifikasi:
 
 ```bash
-docker rmi -f ubuntu:latest
+docker ps -a
 ```
+
+Container:
+
+```text
+server_uas_analitik
+```
+
+sudah tidak ada.
 
 ---
 
 # 🔍 Troubleshooting
+
+## Container Sudah Ada
+
+Error:
+
+```text
+The container name "/server_uas_analitik" is already in use
+```
+
+Solusi:
+
+```bash
+docker rm -f server_uas_analitik
+```
+
+Kemudian jalankan kembali:
+
+```bash
+terraform apply -auto-approve
+```
+
+---
+
+## Terraform Tidak Menemukan main.tf
+
+Pastikan berada pada folder:
+
+```bash
+cd terraform
+```
+
+Lalu jalankan:
+
+```bash
+terraform init
+```
+
+---
 
 ## Docker Tidak Berjalan
 
@@ -254,44 +321,27 @@ docker ps
 Jika muncul:
 
 ```text
-Cannot connect to Docker daemon
+Cannot connect to the Docker daemon
 ```
 
 Pastikan Docker Desktop sudah aktif.
 
 ---
 
-## Terraform Tidak Dikenali
+# 🎯 Tujuan Pembelajaran
 
-Jika muncul:
+Melalui proyek ini mahasiswa mampu:
 
-```text
-terraform is not recognized
-```
-
-Tambahkan Terraform ke Environment Variable PATH.
-
----
-
-## Container Tidak Ditemukan
-
-Cek:
-
-```bash
-docker ps -a
-```
-
-Jika container berhenti:
-
-```bash
-terraform apply -auto-approve
-```
-
-jalankan kembali.
+* Mengimplementasikan Infrastructure as Code (IaC).
+* Menggunakan Terraform untuk provisioning infrastruktur.
+* Menggunakan Ansible untuk otomatisasi konfigurasi.
+* Mengelola container Docker.
+* Menjalankan aplikasi Data Science dalam lingkungan terisolasi.
+* Mengintegrasikan konsep DevOps dan MLOps dalam satu alur kerja.
 
 ---
 
-# 👨‍💻 Penulis
+# 👨‍💻 Author
 
 **Bintang Gilangkasa Syailendra**
 
@@ -300,5 +350,3 @@ Program Studi Sains Data
 Universitas Islam Negeri Salatiga
 
 Mata Kuliah DevOps for Data Science
-
-Semester 6
