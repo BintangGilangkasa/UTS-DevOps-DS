@@ -1,0 +1,22 @@
+---
+- name: Otomatisasi Penginstalan Environment Data Science
+  hosts: staging
+  gather_facts: no  # Dimatikan karena python belum terinstal di target awal
+  
+  tasks:
+    # Task 1: Raw Mode untuk update dan instalasi dasar Python
+    - name: Pembaruan repositori dan instalasi dasar Python (Raw Mode)
+      raw: |
+        apt-get update && \
+        apt-get install -y python3 python3-pip
+      changed_when: true
+
+    # Task 2: Pip Mode untuk install library analitik/pandas
+    - name: Instalasi pustaka data science global (Requirements)
+      pip:
+        name: 
+          - pandas
+          - psycopg2-binary
+        # Jika ingin menggunakan file requirements.txt dari UTS, ganti baris di atas menjadi:
+        # requirements: /path/to/your/requirements.txt
+        extra_args: --break-system-packages
