@@ -328,6 +328,14 @@ Pastikan Docker Desktop sudah aktif.
 
 ---
 
+# 📷 Dokumentasi Project
+
+PLAY RECAP:
+
+![Dokumentasi PLAY RECAP](doc/running ansible.png)
+
+Terr
+
 # 🎯 Tujuan Pembelajaran
 
 Melalui proyek ini mahasiswa mampu:
