@@ -332,9 +332,9 @@ Pastikan Docker Desktop sudah aktif.
 
 PLAY RECAP:
 
-![Dokumentasi PLAY RECAP](doc/running ansible.png)
+![Dokumentasi PLAY RECAP](doc/playrecap.png)
 
-Terr
+---
 
 # 🎯 Tujuan Pembelajaran
 
